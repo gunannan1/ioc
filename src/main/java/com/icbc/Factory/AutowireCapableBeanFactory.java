@@ -1,4 +1,4 @@
-package com.spdb.Factory;
+package com.icbc.Factory;
 
 public interface AutowireCapableBeanFactory extends BeanFactory {
 

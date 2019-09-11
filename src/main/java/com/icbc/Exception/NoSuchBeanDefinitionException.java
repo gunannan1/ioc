@@ -1,4 +1,4 @@
-package com.spdb.Exception;
+package com.icbc.Exception;
 
 
 public class NoSuchBeanDefinitionException extends Exception {

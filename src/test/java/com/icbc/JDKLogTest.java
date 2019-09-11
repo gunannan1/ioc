@@ -1,11 +1,11 @@
-package com.spdb;
+package com.icbc;
 
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.spdb.Util.Log.LogFactory;
-import com.spdb.Util.Log.LogUtil;
+import com.icbc.Util.Log.LogFactory;
+import com.icbc.Util.Log.LogUtil;
 import org.junit.Test;
 
 public class JDKLogTest {

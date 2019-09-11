@@ -1,4 +1,4 @@
-package com.spdb.Util.Log;
+package com.icbc.Util.Log;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.spdb.Exception;
+package com.icbc.Exception;
 
 public class BeanException extends RuntimeException{
     private static final long serialVersionUID = 5439915454935047936L;

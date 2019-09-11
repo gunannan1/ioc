@@ -1,7 +1,7 @@
-package com.spdb.Factory;
+package com.icbc.Factory;
 
-import com.spdb.Exception.BeanException;
-import com.spdb.Exception.NoSuchBeanDefinitionException;
+import com.icbc.Exception.BeanException;
+import com.icbc.Exception.NoSuchBeanDefinitionException;
 
 /**
  *

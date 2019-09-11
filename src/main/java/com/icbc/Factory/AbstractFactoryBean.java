@@ -1,7 +1,7 @@
-package com.spdb.Factory;
+package com.icbc.Factory;
 
 
-import com.spdb.Util.Log.LogFactory;
+import com.icbc.Util.Log.LogFactory;
 
 import java.util.logging.Logger;
 
