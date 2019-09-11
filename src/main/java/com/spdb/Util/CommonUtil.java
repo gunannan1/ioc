@@ -39,4 +39,6 @@ public class CommonUtil {
             return obj==null?false:true;
         }
     }
+
+
 }
