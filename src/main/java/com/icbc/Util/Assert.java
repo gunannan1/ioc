@@ -1,13 +1,11 @@
 package com.icbc.Util;
-import	java.util.Set;
+import java.util.*;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-public class CommonUtil {
+public class Assert {
 
-    private CommonUtil(){}
+    private Assert(){}
 
     public static boolean isNullOrEmpty(Object obj){
         if (obj instanceof Object []){
@@ -40,5 +38,11 @@ public class CommonUtil {
         }
     }
 
+    public static boolean isNotEmpty(Collection<?> c){
+        return c != null && c.size()>0;
+    }
 
+    public static boolean isEffectiveString(String value) {
+        return value != null && !value.equals("");
+    }
 }
