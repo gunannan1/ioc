@@ -29,7 +29,7 @@ public interface BeanFactory {
      * @throws BeanException
      *  //根据bean的名字和Class类型来得到bean实例，增加了类型安全验证机制。
      */
-    Object getBean(String name, Class requiredType) throws BeanException;
+     <T> T getBean(String name, Class<T> requiredType) throws BeanException;
 
     /**
      * @param name
