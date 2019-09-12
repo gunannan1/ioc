@@ -1,29 +1,36 @@
 package com.icbc.Factory.support;
+import com.icbc.Util.Log.LogFactory;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import	java.util.logging.Logger;
 
 import java.util.logging.Logger;
 
 public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
-    private final static Logger logger=Logger.getGlobal();
+    private final static Logger logger= LogFactory.getGlobalLog();
+
+    private final Map SingletonObjects=new ConcurrentHashMap<String,Object>(64);
 
     @Override
     public void registerSingleton(String beanName, Object beanInstance) {
-
+        SingletonObjects.put(beanName,beanInstance);
+        logger.info("put bean:"+beanName + ""+beanInstance.toString());
     }
 
     @Override
     public Object getSingleton(String beanName) {
-        return null;
+        return SingletonObjects.get(beanName);
     }
 
     @Override
     public boolean containSingleton(String beanName) {
-        return false;
+        return SingletonObjects.containsKey(beanName);
     }
 
     @Override
     public int getSingleCount() {
-        return 0;
+        return SingletonObjects.size();
     }
 }
