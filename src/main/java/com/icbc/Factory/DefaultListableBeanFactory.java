@@ -4,7 +4,8 @@ import com.icbc.Exception.BeanException;
 import com.icbc.Exception.NoSuchBeanDefinitionException;
 
 public class DefaultListableBeanFactory extends AbstractBeanFactory implements
-        AutowireCapableBeanFactory,ListableBeanFactory,ConfigurableBeanFactory {
+        ListableBeanFactory {
+
     @Override
     public boolean containsBeanDefinition(String var1) {
         return false;
