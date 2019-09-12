@@ -1,4 +1,4 @@
-package com.spdb;
+package com.icbc;
 
 /**
  * Hello world!
