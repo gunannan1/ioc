@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.icbc.Util.Log.LogFactory;
-import com.icbc.Util.Log.LogUtil;
+import com.icbc.util.log.LogFactory;
+import com.icbc.util.log.LogUtil;
 import org.junit.Test;
 
 public class JDKLogTest {

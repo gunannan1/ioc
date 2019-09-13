@@ -1,7 +1,7 @@
-package com.icbc.Factory;
+package com.icbc.factory;
 
-import com.icbc.Exception.BeanException;
-import com.icbc.Exception.NoSuchBeanDefinitionException;
+import com.icbc.exception.BeanException;
+import com.icbc.exception.NoSuchBeanDefinitionException;
 
 /**
  *

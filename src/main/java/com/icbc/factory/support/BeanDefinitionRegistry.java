@@ -1,6 +1,6 @@
-package com.icbc.Factory.support;
+package com.icbc.factory.support;
 
-import com.icbc.Config.BeanDefinition;
+import com.icbc.config.BeanDefinition;
 
 public interface BeanDefinitionRegistry {
 

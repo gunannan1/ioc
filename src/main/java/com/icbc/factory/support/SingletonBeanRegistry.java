@@ -1,4 +1,4 @@
-package com.icbc.Factory.support;
+package com.icbc.factory.support;
 
 public interface SingletonBeanRegistry{
 

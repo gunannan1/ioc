@@ -1,4 +1,4 @@
-package com.icbc.Annotation;
+package com.icbc.annotation;
 
 public @interface component {
 }

@@ -1,4 +1,4 @@
-package com.icbc.Factory;
+package com.icbc.factory;
 
 public interface FactoryBean<T> {
     T getObject() throws Exception;

@@ -1,4 +1,4 @@
-package com.icbc.Util;
+package com.icbc.util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class ScanPackageUtil {
     private static List<String> getClassName(String filePath,
                                              List<String> className) {
 
-        List<String> myClassName = new ArrayList<String>();
+        List<String> myClassName = new ArrayList<>();
         File file = new File(filePath);
         File[] childFiles = file.listFiles();
         for (File childFile : childFiles) {

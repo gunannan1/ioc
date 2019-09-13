@@ -1,5 +1,5 @@
-package com.icbc.Config;
-import com.icbc.Util.Log.LogFactory;
+package com.icbc.config;
+import com.icbc.util.log.LogFactory;
 
 import java.util.ArrayList;
 import	java.util.logging.Logger;

@@ -1,4 +1,4 @@
-package com.icbc.Factory;
+package com.icbc.factory;
 
 public interface ListableBeanFactory extends BeanFactory {
 

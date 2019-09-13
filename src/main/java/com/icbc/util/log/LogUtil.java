@@ -1,4 +1,4 @@
-package com.icbc.Util.Log;
+package com.icbc.util.log;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -11,6 +11,10 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class LogUtil {
+
+    private static final Logger logger=Logger.getLogger(LogUtil.class.getName());
+
+    private LogUtil(){}
 
     // 正常的日期格式
     public static final String DATE_PATTERN_FULL = "yyyy-MM-dd HH:mm:ss";
@@ -72,10 +76,8 @@ public class LogUtil {
                 }
             });
 
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (SecurityException|IOException e) {
+            logger.log(Level.SEVERE,"context:",e);
         }
         // 添加输出文件handler
         log.addHandler(fileHandler);

@@ -1,4 +1,4 @@
-package com.icbc.Util.Log;
+package com.icbc.util.log;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -6,33 +6,39 @@ import java.util.logging.Logger;
 
 public class LogFactory {
 
+    private LogFactory(){}
+
     // 全局Log的名称
     public static final String LOG_NAME = "Global";
 
     // 这个文件路径必须存在，不存在会报错，并不会自动创建
-    public static String LOG_FOLDER =null;
+    private static String logFolder =null;
 
 
     // log文件路径
-    private static String log_filepath;
+    private static String logFilepath=null;
 
     // 静态变量globleLog
     private static Logger globalLog;
 
+    public static final Logger logger = Logger.getLogger(LogFactory.class.getName());
+
     static {
-        File file=new File(System.getProperty("user.home")+"\\Log\\JDKLog");
+
+
+        File file=new File(System.getProperty("user.home")+"\\log\\JDKLog");
         if (!file.exists()){
             if(file.mkdirs()) {
-                System.out.println("创建路径成功");
+                logger.info("创建路径成功");
             }else {
-                System.out.println("创建失败");
+                logger.info("创建失败");
             }
         }
-        LOG_FOLDER =System.getProperty("user.home")+"\\Log\\JDKLog";
+        logFolder =System.getProperty("user.home")+"\\log\\JDKLog";
 
 
         // 加载类的时候初始化log文件全路径，这里的文件名称是JDKLog_+时间戳+.log
-        log_filepath = LOG_FOLDER + File.separator + "JDKLog_" + LogUtil.getCurrentDateStr(LogUtil.DATE_PATTERN_NOMARK)
+        logFilepath = logFolder + File.separator + "JDKLog_" + LogUtil.getCurrentDateStr(LogUtil.DATE_PATTERN_NOMARK)
                 + ".log";
 
         // 加载类的时候直接初始化globleLog
@@ -56,7 +62,7 @@ public class LogFactory {
         LogUtil.addConsoleHandler(log, Level.INFO);
 
         // 添加文件输出handler
-        LogUtil.addFileHandler(log, Level.INFO, log_filepath);
+        LogUtil.addFileHandler(log, Level.INFO, logFilepath);
 
         // 设置不适用父类的handlers，这样不会在控制台重复输出信息
         log.setUseParentHandlers(false);

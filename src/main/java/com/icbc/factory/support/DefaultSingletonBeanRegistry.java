@@ -1,11 +1,9 @@
-package com.icbc.Factory.support;
-import com.icbc.Util.Log.LogFactory;
+package com.icbc.factory.support;
+import com.icbc.util.log.LogFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import	java.util.logging.Logger;
-
-import java.util.logging.Logger;
 
 public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 

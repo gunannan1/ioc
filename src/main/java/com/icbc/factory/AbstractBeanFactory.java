@@ -1,11 +1,11 @@
-package com.icbc.Factory;
+package com.icbc.factory;
 import java.util.HashMap;
 import java.util.Map;
 import	java.util.logging.Logger;
 
-import com.icbc.Exception.BeanException;
-import com.icbc.Factory.support.DefaultSingletonBeanRegistry;
-import com.icbc.Util.Log.LogFactory;
+import com.icbc.exception.BeanException;
+import com.icbc.factory.support.DefaultSingletonBeanRegistry;
+import com.icbc.util.log.LogFactory;
 
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory{
 

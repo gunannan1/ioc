@@ -1,4 +1,4 @@
-package com.icbc.Config;
+package com.icbc.config;
 
 import java.util.List;
 

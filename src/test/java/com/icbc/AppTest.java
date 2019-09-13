@@ -17,6 +17,6 @@ public class AppTest
      */
     @Test
     public void shouldAnswerWithTrue() throws IOException {
-        System.out.println(System.getProperty("user.home")+"\\Log\\JDKLog");
+        System.out.println(System.getProperty("user.home")+"\\log\\JDKLog");
     }
 }
