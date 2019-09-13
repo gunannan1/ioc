@@ -87,7 +87,7 @@ public class LogUtil {
      * @return
      */
     public static String getCurrentDateStr(String pattern) {
-        Date date = new Date();
+        Date date =new Date(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         return sdf.format(date);
     }
