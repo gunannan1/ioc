@@ -1,0 +1,10 @@
+<beans>
+    <bean name="son" class="com.icbc.Entity.Son">
+        <property name="name" value="小王"></property>
+    </bean>
+    <bean name="father" class="com.icbc.Entity.Father">
+        <property name="name" value="老王"></property>
+        <property name="son" ref="son"></property>
+    </bean>
+
+</beans>

@@ -1,8 +1,11 @@
 package com.icbc.Factory.support;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import	java.util.Map;
 
+import com.icbc.Config.BeanDefinition;
+import com.icbc.Config.DefaultBeanDefinition;
 import com.icbc.Util.Log.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -64,17 +67,36 @@ public class XmlParser {
     }
 
     //uncompleted
-    public static final Map<String,Object> parse(Document document){
+    public static final Map<String,Object> parse(Document document) throws Exception{
         //获取根节点
         Element root=document.getDocumentElement();
         logger.info("根节点标记"+root.getTagName());
+        Map<String,Object> map=new HashMap<>();
 
         //遍历节点
         NodeList nodeList=root.getElementsByTagName("bean");
         for (int i=0;i<nodeList.getLength();i++){
             Element node = (Element) nodeList.item(i);
+            String id = node.getAttribute("id");
+            String classPath = node.getAttribute("class");
+            BeanDefinition beanDefinition = new DefaultBeanDefinition();
+            beanDefinition.setBeanClass(Class.forName(classPath));
+            NodeList properties = node.getElementsByTagName("property");
+            for(int j=0;j<properties.getLength();j++){
+                Element property=(Element) properties.item(j);
+                String name = property.getAttribute("name");
+                String value = property.getAttribute("value");
+                String ref = property.getAttribute("ref");
+                if(value != null&&value.length()>0){
+                    beanDefinition.addDepend("V."+name+"."+value);
+                }
+                else if(ref != null&&ref.length()>0){
+                    beanDefinition.addDepend("R."+name+"."+value);
+                }
 
+            }
+            map.put(id,beanDefinition);
         }
-        return null;
+        return map;
     }
 }
