@@ -34,8 +34,6 @@ public class AppTest
 //        System.out.println("father's name is "+father.getName());
         Assert.assertEquals(father.getName(),"老王");
         Assert.assertEquals(son.getName(),"小王");
-        System.out.println(father);
-        System.out.println(father3);
         Assert.assertEquals(father,father3);
 
         Assert.assertEquals(son,father.getSon());
