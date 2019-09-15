@@ -2,19 +2,19 @@ package com.icbc.resourcereader.reader;
 
 
 import com.icbc.factory.support.BeanDefinitionRegistry;
-import com.icbc.resourcereader.DefaultResourceLoad;
-import com.icbc.resourcereader.ResourceLoad;
+import com.icbc.resourcereader.DefaultResourceLoader;
+import com.icbc.resourcereader.ResourceLoader;
 import com.icbc.resourcereader.resource.Resource;
 
 public abstract class AbstractBeanDefinitionReader implements BeanDefinitionReader{
 	
 	protected final BeanDefinitionRegistry registry;
 
-	private ResourceLoad resourceLoader;
+	private ResourceLoader resourceLoader;
 	
 	public AbstractBeanDefinitionReader(BeanDefinitionRegistry registry){
 		this.registry=registry;
-		this.resourceLoader = (ResourceLoad) this.registry;
+		this.resourceLoader = (ResourceLoader) this.registry;
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 	}
 
 	@Override
-	public ResourceLoad getResourceLoader() {
+	public ResourceLoader getResourceLoader() {
 		return this.resourceLoader;
 	}
 

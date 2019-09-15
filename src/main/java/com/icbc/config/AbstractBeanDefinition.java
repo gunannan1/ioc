@@ -1,7 +1,9 @@
 package com.icbc.config;
+import	java.util.Map;
 import com.icbc.util.log.LogFactory;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 import	java.util.logging.Logger;
 
 import java.util.List;
@@ -22,16 +24,19 @@ public abstract class AbstractBeanDefinition implements BeanDefinition{
      * 当前bean所依赖的bean列表
      * spring中beanDefinition只返回bean的name
      */
-    List<String> dependentBeanDefinitions=new ArrayList<>();
+    Map<String,String> dependentBeanDefinitions=new ConcurrentHashMap<>();
+
+    Map<String,Object>attributes=new ConcurrentHashMap<>();
+    Map <String,Class>attributesType=new ConcurrentHashMap<>();
 
     @Override
-    public List<String> getDepends() {
+    public Map getDepends() {
         return dependentBeanDefinitions;
     }
 
     @Override
-    public void addDepend(String depend) {
-        dependentBeanDefinitions.add(depend);
+    public void addDepend(String name,String depend) {
+        dependentBeanDefinitions.put(name,depend);
     }
 
     @Override
@@ -53,5 +58,59 @@ public abstract class AbstractBeanDefinition implements BeanDefinition{
     @Override
     public void setBeanClass(Class<?> beanClass) {
         this.beanClass = beanClass;
+    }
+
+    @Override
+    public void setAttribute(String name, Object value) {
+        attributes.put(name,value);
+        attributesType.put(name,Object.class);
+    }
+
+    @Override
+    public <T> void setAttribute(String name, Class clazz, T value) {
+        attributes.put(name,value);
+        attributesType.put(name,clazz);
+    }
+
+    @Override
+    public Object getAttribute(String name) {
+        return attributes.get(name);
+    }
+
+    @Override
+    public <T> T getAttributeByName(String name, Class tClass) {
+        if (attributesType.get(name)==tClass){
+            return (T) attributes.get(name);
+        }else{
+            logger.severe("No such Type Value");
+            return null;
+        }
+    }
+
+    @Override
+    public boolean containsAttribute(String name) {
+        return attributes.containsKey(name);
+    }
+
+    @Override
+    public <T> T removeAttribute(String name) {
+        if (containsAttribute(name)){
+            T value= (T) attributes.get(name);
+            attributes.remove(name);
+            attributesType.remove(name);
+            return value;
+        }else{
+            logger.severe("Not Found "+name);
+            return null;
+        }
+    }
+
+    @Override
+    public Map<String, Object>getAttributes(){
+        return attributes;
+    }
+    @Override
+    public Class<?> getType(String name){
+        return attributesType.get(name);
     }
 }

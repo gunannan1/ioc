@@ -1,13 +1,15 @@
 package com.icbc.config;
 
 import java.util.List;
+import java.util.Map;
 
-public interface BeanDefinition {
+
+public interface BeanDefinition extends AttributeAccessor{
 
     //获得依赖BeanDefinition的名字
-    List<String> getDepends();
+    Map getDepends();
 
-    void addDepend(String depend);
+    void addDepend(String name,String depend);
 
     String getDescription();
 

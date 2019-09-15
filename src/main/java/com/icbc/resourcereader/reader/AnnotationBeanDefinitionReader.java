@@ -62,7 +62,7 @@ public class AnnotationBeanDefinitionReader extends XmlBeanDefinitionReader {
                                     Autowired autowired = f.getAnnotation(Autowired.class);
                                     if (autowired != null) {
                                         //
-                                        beanDefinition.addDepend(autowired.value());
+                                        beanDefinition.addDepend(f.getName(),autowired.value());
                                     }
                                 }
                             }

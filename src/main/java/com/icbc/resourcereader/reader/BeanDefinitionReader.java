@@ -2,15 +2,15 @@ package com.icbc.resourcereader.reader;
 
 
 import com.icbc.factory.support.BeanDefinitionRegistry;
-import com.icbc.resourcereader.DefaultResourceLoad;
-import com.icbc.resourcereader.ResourceLoad;
+import com.icbc.resourcereader.DefaultResourceLoader;
+import com.icbc.resourcereader.ResourceLoader;
 import com.icbc.resourcereader.resource.Resource;
 
 public interface BeanDefinitionReader {
 	
 	BeanDefinitionRegistry getBeanDefinitionRegistry();
 	
-	ResourceLoad getResourceLoader();
+	ResourceLoader getResourceLoader();
 	
 	int loadBeanDefinitions(Resource... resources) throws Exception;
 	

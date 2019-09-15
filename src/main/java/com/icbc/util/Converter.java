@@ -745,6 +745,27 @@ public class Converter {
         return result;
     }
 
+    public static Class cast2Class(String classname) throws ClassNotFoundException {
+        if(classname.equals(int.class.getName())) {
+            return int.class;
+        }else if(classname.equals(short.class.getName())) {
+            return short.class;
+        }else if(classname.equals(byte.class.getName())) {
+            return byte.class;
+        }else if(classname.equals(long.class.getName())) {
+            return long.class;
+        }else if(classname.equals(char.class.getName())) {
+            return char.class;
+        }else if(classname.equals(boolean.class.getName())) {
+            return boolean.class;
+        }else if(classname.equals(float.class.getName())) {
+            return float.class;
+        }else if(classname.equals(double.class.getName())) {
+            return double.class;
+        }return Class.forName(classname);
+
+    }
+
 }
 
 

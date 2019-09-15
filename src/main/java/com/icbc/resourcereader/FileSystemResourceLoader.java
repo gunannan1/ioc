@@ -5,7 +5,7 @@ import com.icbc.resourcereader.resource.Resource;
 
 import java.io.File;
 
-public class FileSystemResourceLoader extends DefaultResourceLoad {
+public class FileSystemResourceLoader extends DefaultResourceLoader {
 
     @Override
     public Resource getResource(String path) {

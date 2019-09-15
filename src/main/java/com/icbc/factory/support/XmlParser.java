@@ -1,7 +1,6 @@
 package com.icbc.factory.support;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,17 +8,12 @@ import	java.util.Map;
 
 import com.icbc.config.BeanDefinition;
 import com.icbc.config.DefaultBeanDefinition;
+import com.icbc.util.Converter;
 import com.icbc.util.log.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.util.logging.Logger;
 
 public class XmlParser {
@@ -59,12 +53,12 @@ public class XmlParser {
                 String name = property.getAttribute("name");
                 String value = property.getAttribute("value");
                 String ref = property.getAttribute("ref");
-
+                String type = property.getAttribute("type");
                 if(value != null&&value.length()>0){
-                    beanDefinition.addDepend("V."+name+"."+value);
+                    beanDefinition.setAttribute(name, Converter.cast2Class(type),value);
                 }
                 else if(ref != null&&ref.length()>0){
-                    beanDefinition.addDepend("R."+name+"."+ref);
+                    beanDefinition.addDepend(name,ref);
                 }
 
             }
