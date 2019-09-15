@@ -30,16 +30,7 @@ public class AppTest
         AutowireApplicationContext default1 = new AutowireApplicationContext(
                 AppTest.class.getResource("/test.xml").getFile()
         );
-<<<<<<< HEAD
-        BeanDefinition father=default1.getBeanDefinition("father");
-        BeanDefinition son=default1.getBeanDefinition("son");
 
-
-        Father father1 = (Father) default1.getBean("father");
-        Son son1= (Son) default1.getBean("son");
-
-        System.out.println(father1.toString());
-=======
         Father father= (Father) default1.getBean("father");
         Father father3= (Father) default1.getBean("father");
 
@@ -50,6 +41,6 @@ public class AppTest
         Assert.assertEquals(father,father3);
 
         Assert.assertEquals(son,father.getSon());
->>>>>>> 359c9320c084257bf530b24df0ef869a9148bc85
+
     }
 }
