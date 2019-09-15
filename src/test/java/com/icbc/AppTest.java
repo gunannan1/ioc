@@ -3,8 +3,10 @@ package com.icbc;
 import static org.junit.Assert.assertTrue;
 
 import com.icbc.entity.Father;
+import com.icbc.entity.Son;
 import com.icbc.factory.DefaultListableBeanFactory;
 import com.icbc.resourcereader.reader.XmlBeanDefinitionReader;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
@@ -26,6 +28,16 @@ public class AppTest
                 AppTest.class.getResource("/test.xml").getFile()
         );
         Father father= (Father) default1.getBean("father");
-        System.out.println("father's name is "+father.getName());
+        Father father3= (Father) default1.getBean("father");
+
+        Son son=(Son)default1.getBean("son");
+//        System.out.println("father's name is "+father.getName());
+        Assert.assertEquals(father.getName(),"老王");
+        Assert.assertEquals(son.getName(),"小王");
+        System.out.println(father);
+        System.out.println(father3);
+        Assert.assertEquals(father,father3);
+
+        Assert.assertEquals(son,father.getSon());
     }
 }
