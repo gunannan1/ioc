@@ -1,10 +1,20 @@
 package com.icbc.factory;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import	java.util.logging.Logger;
 
+import com.icbc.config.BeanDefinition;
 import com.icbc.exception.BeanException;
 import com.icbc.exception.NoSuchBeanDefinitionException;
+import com.icbc.util.log.LogFactory;
+
 
 public class DefaultListableBeanFactory extends AbstractBeanFactory implements
         ListableBeanFactory {
+
+    private static Logger logger = LogFactory.getGlobalLog();
+    protected Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>(256);
+
 
     @Override
     public boolean containsBeanDefinition(String var1) {

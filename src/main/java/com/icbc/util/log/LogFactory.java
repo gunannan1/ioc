@@ -12,7 +12,7 @@ public class LogFactory {
     public static final String LOG_NAME = "Global";
 
     // 这个文件路径必须存在，不存在会报错，并不会自动创建
-    private static String logFolder =null;
+    public static String logFolder =null;
 
 
     // log文件路径
