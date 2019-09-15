@@ -100,6 +100,7 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
             }
 
         }
+        registerSingleton(BeanName,bean);
         return bean;
     }
 

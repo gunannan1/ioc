@@ -13,7 +13,7 @@ public class ScanPackageUtil {
 
     public static List<String> getClassName(String packageName) {
 
-        String filePath ="test\\java\\"+packageName.replace(".", "\\");
+        String filePath =ScanPackageUtil.class.getResource("/"+packageName.replace(".", "/")).getFile();
         List<String> fileNames = getClassName(filePath, null);
         return fileNames;
     }
@@ -31,11 +31,10 @@ public class ScanPackageUtil {
             } else {
                 String childFilePath = childFile.getPath();
                 childFilePath = childFilePath.substring(
-                        childFilePath.indexOf("\\classes") + 9,
+                        childFilePath.indexOf("com\\"),
                         childFilePath.lastIndexOf("."));
                 childFilePath = childFilePath.replace("\\", ".");
-                childFilePath=childFilePath.substring(6,childFilePath.length());
-                myClassName.add("com."+childFilePath);
+                myClassName.add(childFilePath);
             }
         }
         return myClassName;
