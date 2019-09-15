@@ -7,11 +7,11 @@ import java.util.logging.Level;
 import	java.util.logging.Logger;
 
 import com.icbc.config.BeanDefinition;
-import com.icbc.exception.BeanException;
 import com.icbc.exception.CircularDependException;
 import com.icbc.exception.NoSuchBeanDefinitionException;
 import com.icbc.factory.support.BeanDefinitionRegistry;
 import com.icbc.resourcereader.ResourceLoader;
+import com.icbc.resourcereader.reader.XmlBeanDefinitionReader;
 import com.icbc.resourcereader.resource.FileSystemResource;
 import com.icbc.resourcereader.resource.Resource;
 import com.icbc.util.Converter;
@@ -25,17 +25,37 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
     protected Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>(256);
     protected Resource resource;
 
+    public DefaultListableBeanFactory(Resource resource) throws Exception {
+        this.resource = resource;
+        refresh();
+    }
+
+    public DefaultListableBeanFactory(String location) throws Exception {
+        this.resource = getResource(location);
+        refresh();
+    }
+
+    // 好了，最后给定一个初始化方法
+    protected void refresh() throws Exception {
+        // 在这里，我们完成容器的初始化
+        // 1.资源我们已经在构造方法中获取
+        // 2.资源的解析
+        int count = new ResourceReaderBeanFactory(this).loadBeanDefinitions(resource);
+        // 3.容器的注册方法会被自动调用，此时注册就完成了
+        logger.info("一共初注册了" + count + "个beanDefinition");
+    }
+
+    protected class ResourceReaderBeanFactory extends XmlBeanDefinitionReader {
+        public ResourceReaderBeanFactory(BeanDefinitionRegistry registry) {
+            super(registry);
+        }
+    }
 
     @Override
     public int getBeanDefinitionCount() {
         return beanDefinitionMap.size();
     }
 
-
-    @Override
-    public Object getBean(String name) throws BeanException {
-        return super.getBean(name);
-    }
 
     @Override
     protected Object createBean(String BeanName, BeanDefinition beanDefinition) throws CircularDependException {
@@ -85,9 +105,11 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
 
     /*TODO*/
     private Object beanBasicTypeAutowired(Object bean, BeanDefinition beanDefinition){
+
         for (Map.Entry<String,Object>entry:beanDefinition.getAttributes().entrySet()){
             Class<?> clazz=beanDefinition.getType(entry.getKey());
-            invokeMethod(bean,entry.getKey(), clazz,entry.getValue());
+            String methodName = "set" + entry.getKey().substring(0, 1).toUpperCase() +  entry.getKey().substring(1);
+            invokeMethod(bean,methodName, clazz,entry.getValue());
         }
         return bean;
     }
@@ -109,10 +131,6 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
     }
 
 
-    @Override
-    public Object getBean(String name, Class requiredType) throws BeanException {
-        return super.getBean(name,requiredType);
-    }
 
 
     @Override
