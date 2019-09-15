@@ -15,8 +15,6 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 /*
- * @author cwt
- * @since  2017-02-03
  * @description  直接继承XmlBeanDefinitionReader类实现，不仅能读取xml配置，
  * 还能自动将注解类注入IOC容器
  * 它从注解中获取beanDefinition

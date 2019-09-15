@@ -12,6 +12,7 @@ import com.icbc.config.DefaultBeanDefinition;
 import com.icbc.util.log.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -33,22 +34,32 @@ public class XmlParser {
         //获取根节点
         Element root=document.getDocumentElement();
         logger.info("根节点标记"+root.getTagName());
-        Map<String,BeanDefinition> map=new HashMap<>();
-
-        //遍历节点
+        //遍历节点获取package-scan
+        NodeList packages=root.getElementsByTagName("package-scan");
+        for (int i=0;i<packages.getLength();i++){
+            Element node = (Element) packages.item(i);
+            ComponentPackageNames.add(node.getAttribute("package-name"));
+        }
+        //遍历节点扫描bean
         NodeList nodeList=root.getElementsByTagName("bean");
         for (int i=0;i<nodeList.getLength();i++){
+
             Element node = (Element) nodeList.item(i);
             String id = node.getAttribute("name");
             String classPath = node.getAttribute("class");
             BeanDefinition beanDefinition = new DefaultBeanDefinition();
             beanDefinition.setBeanClass(Class.forName(classPath));
+
+
             NodeList properties = node.getElementsByTagName("property");
             for(int j=0;j<properties.getLength();j++){
+
                 Element property=(Element) properties.item(j);
+
                 String name = property.getAttribute("name");
                 String value = property.getAttribute("value");
                 String ref = property.getAttribute("ref");
+
                 if(value != null&&value.length()>0){
                     beanDefinition.addDepend("V."+name+"."+value);
                 }
@@ -57,9 +68,9 @@ public class XmlParser {
                 }
 
             }
-            map.put(id,beanDefinition);
+            beanDefinitions.put(id,beanDefinition);
         }
-        return map;
+        return beanDefinitions;
     }
 
     public static BeanDefinition getBeanDefinition(String name) {
