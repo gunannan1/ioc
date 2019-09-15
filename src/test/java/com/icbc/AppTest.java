@@ -8,6 +8,7 @@ import com.icbc.entity.Father;
 import com.icbc.entity.Son;
 import com.icbc.factory.DefaultListableBeanFactory;
 import com.icbc.resourcereader.reader.XmlBeanDefinitionReader;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
@@ -25,6 +26,7 @@ public class AppTest
     @Test
     public void shouldAnswerWithTrue() throws Exception {
 
+     
         AutowireApplicationContext default1 = new AutowireApplicationContext(
                 AppTest.class.getResource("/test.xml").getFile()
         );
