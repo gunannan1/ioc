@@ -30,6 +30,7 @@ public class AppTest
 
         Son son=(Son)default1.getBean("son");
         father.say();
+        son.say();
 
     }
 }
