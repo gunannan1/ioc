@@ -1,4 +1,8 @@
 package com.publicgroup.util;
+import com.publicgroup.util.log.LogFactory;
+
+import java.util.logging.Level;
+import	java.util.logging.Logger;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.NumberFormat;
@@ -10,6 +14,7 @@ import java.util.Collection;
  * 简单数据类型转换工具类
  */
 public class Converter {
+    private static final Logger logger = LogFactory.getGlobalLog();
 
     private Converter(){}
 
@@ -768,23 +773,33 @@ public class Converter {
     }
 
     public static Object Object2Value(Class<?>classname,String value){
-        if(classname==int.class||classname==Integer.class)
-            return getAsInteger(value);
-        if(classname==Boolean.class||classname==boolean.class)
-            return getAsBoolean(value);
-        if(classname==String.class)
-            return String.valueOf(value);
-        if(classname==Byte.class||classname==byte.class)
-            return getAsByte(value);
-        if(classname==short.class||classname==Short.class)
-            return getAsShort(value);
-        if(classname==long.class||classname==Long.class)
-            return getAsLong(value);
-        if(classname==double.class||classname==Double.class)
-            return getAsDouble(value);
-        if(classname==float.class||classname==Float.class)
-            return getAsFloat(value);
-        return value;
+        Object ans=null;
+        if(classname==int.class||classname==Integer.class) {
+            ans = getAsInteger(value);
+        }else if(classname==Boolean.class||classname==boolean.class){
+            ans =  getAsBoolean(value);
+        }else if(classname==String.class){
+            ans =  String.valueOf(value);
+        }else if(classname==Byte.class||classname==byte.class){
+            ans =  getAsByte(value);
+        }else if(classname==short.class||classname==Short.class){
+            ans =  getAsShort(value);
+        }else if(classname==long.class||classname==Long.class){
+            ans =  getAsLong(value);
+        }else if(classname==double.class||classname==Double.class){
+            ans =  getAsDouble(value);
+        }else if(classname==float.class||classname==Float.class){
+            ans =  getAsFloat(value);
+        }else ans=value;
+
+        if (ans==null){
+            try{
+                throw new RuntimeException ("error: class="+classname.getSimpleName()+" value="+value);
+            }catch (RuntimeException e){
+                logger.log(Level.SEVERE,"注解传参错误：",e);
+            }
+        }
+        return ans;
     }
 
 }

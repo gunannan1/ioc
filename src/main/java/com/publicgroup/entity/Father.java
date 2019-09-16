@@ -12,7 +12,7 @@ public class Father {
     @Autowired
     private Son son;
 
-    @Autowired(value = "11")
+    @Autowired(value = "51")
     private Integer age;
 
     public Father(){};
