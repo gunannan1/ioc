@@ -3,6 +3,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Collection;
 
 /**
  * A simple object converter
@@ -764,6 +765,26 @@ public class Converter {
             return double.class;
         }return Class.forName(classname);
 
+    }
+
+    public static Object Object2Value(Class<?>classname,String value){
+        if(classname==int.class||classname==Integer.class)
+            return getAsInteger(value);
+        if(classname==Boolean.class||classname==boolean.class)
+            return getAsBoolean(value);
+        if(classname==String.class)
+            return String.valueOf(value);
+        if(classname==Byte.class||classname==byte.class)
+            return getAsByte(value);
+        if(classname==short.class||classname==Short.class)
+            return getAsShort(value);
+        if(classname==long.class||classname==Long.class)
+            return getAsLong(value);
+        if(classname==double.class||classname==Double.class)
+            return getAsDouble(value);
+        if(classname==float.class||classname==Float.class)
+            return getAsFloat(value);
+        return value;
     }
 
 }

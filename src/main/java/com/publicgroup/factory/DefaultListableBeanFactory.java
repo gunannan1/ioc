@@ -20,7 +20,7 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
         BeanDefinitionRegistry,ListableBeanFactory,ResourceLoader {
 
     private static Logger logger = LogFactory.getGlobalLog();
-    protected Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>(256);
+    protected Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
     protected Resource resource;
 
     public DefaultListableBeanFactory(Resource resource) throws Exception {
@@ -56,7 +56,7 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
 
 
     @Override
-    protected Object createBean(String BeanName, BeanDefinition beanDefinition) throws CircularDependException {
+    protected Object createBean(String BeanName, BeanDefinition beanDefinition){
         // 如何通过beanDefinition获得一个完整的bean实例（我们已经获取了bean的依赖集合）
         // 当createBean的时候，它所依赖的bean一定已经创建完成了，并且已经放入了完成池
         // 反射获取方法，进行bean的注入

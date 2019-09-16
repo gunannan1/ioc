@@ -13,7 +13,7 @@ import com.publicgroup.util.log.LogFactory;
 
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory{
 
-    private final static Logger logger= LogFactory.getGlobalLog();
+    private static final  Logger logger= LogFactory.getGlobalLog();
 
     /**
      *  创建完成bean池，我会将创建已完成的bean放入其中
@@ -26,12 +26,12 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
 
     @Override
-    public Object getBean(String name) throws BeanException {
+    public Object getBean(String name)  {
         return doGetBean(name, Object.class);
     }
 
     @Override
-    public <T> T getBean(String name, Class<T> requiredType) throws BeanException {
+    public <T> T getBean(String name, Class<T> requiredType){
         return doGetBean(name,requiredType);
     }
 
@@ -42,7 +42,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
      * @return
      * @throws BeanException
      */
-    protected <T> T doGetBean(String name, Class<T> requiredType) throws BeanException {
+    protected <T> T doGetBean(String name, Class<T> requiredType) {
         // 将当前需要创建的bean放入新生池
         creatingBeanPool.put(name, requiredType);
         Object bean;
@@ -76,7 +76,6 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
                         logger.warning("beanName: "+name + "     message:may be you will create  a  "
                                 + "incomplete bean,依赖的bean:"+entry.getValue()+"不存在！");
                         // 直接跳过，进入下一次循环
-                        continue;
                     } else {
                         // 存在该bean依赖的beanDefinition，我们必须先创建它所依赖的bean
                         // 在这里，如果发现需要的依赖bean并没有创建完毕

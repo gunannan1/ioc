@@ -13,9 +13,9 @@ public class ScanPackageUtil {
 
     public static List<String> getClassName(String packageName) {
 
-        String filePath =ScanPackageUtil.class.getResource("/"+packageName.replace(".", "/")).getFile();
-        List<String> fileNames = getClassName(filePath, null);
-        return fileNames;
+        String filePath =ScanPackageUtil.class.getResource('/'+packageName.replace(".", "/")).getFile();
+        return getClassName(filePath, null);
+
     }
 
     private static List<String> getClassName(String filePath,
@@ -32,7 +32,7 @@ public class ScanPackageUtil {
                 String childFilePath = childFile.getPath();
                 childFilePath = childFilePath.substring(
                         childFilePath.indexOf("com\\"),
-                        childFilePath.lastIndexOf("."));
+                        childFilePath.lastIndexOf('.'));
                 childFilePath = childFilePath.replace("\\", ".");
                 myClassName.add(childFilePath);
             }

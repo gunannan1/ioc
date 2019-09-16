@@ -36,8 +36,6 @@ public abstract class AbstractBeanDefinition implements BeanDefinition{
         dependentBeanDefinitions.put(name,depend);
     }
 
-    @Override
-    public abstract String getDescription();
 
     @Override
     public Class<?> getBeanClass() {

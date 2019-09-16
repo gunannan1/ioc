@@ -12,6 +12,9 @@ public class Father {
     @Autowired
     private Son son;
 
+    @Autowired(value = "11")
+    private Integer age;
+
     public Father(){};
 
     public Father(Son son,String name){
@@ -20,7 +23,7 @@ public class Father {
     }
 
     public void say(){
-        System.out.println("My name is "+name +" and my son's name is "+son.getName());
+        System.out.println("My name is "+name +" and my son's name is "+son.getName()+"and my age is "+age);
     }
 
     public String getName() {
@@ -37,5 +40,9 @@ public class Father {
 
     public void setSon(Son son) {
         this.son = son;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 }

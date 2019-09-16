@@ -19,7 +19,7 @@ public abstract class AbstractResource implements Resource{
                 is.close();
                 return true;
             }
-            catch (Throwable isEx) {
+            catch (Exception isEx) {
                 return false;
             }
         }

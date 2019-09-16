@@ -18,13 +18,15 @@ import java.util.logging.Logger;
 
 public class XmlParser {
 
-    public final static Logger logger= LogFactory.getGlobalLog();
+    private XmlParser(){}
+
+    public static final Logger logger= LogFactory.getGlobalLog();
 
     private static Map<String, BeanDefinition> beanDefinitions = new HashMap<>();
-    private static List<String> ComponentPackageNames = new ArrayList<String>();
+    private static List<String> componentPackageNames = new ArrayList<>();
 
     //uncompleted
-    public static final Map<String,BeanDefinition> parse(Document document) throws Exception{
+    public static final Map<String,BeanDefinition> parse(Document document) throws ClassNotFoundException {
         //获取根节点
         Element root=document.getDocumentElement();
         logger.info("根节点标记"+root.getTagName());
@@ -32,7 +34,7 @@ public class XmlParser {
         NodeList packages=root.getElementsByTagName("package-scan");
         for (int i=0;i<packages.getLength();i++){
             Element node = (Element) packages.item(i);
-            ComponentPackageNames.add(node.getAttribute("package-name"));
+            componentPackageNames.add(node.getAttribute("package-name"));
         }
         //遍历节点扫描bean
         NodeList nodeList=root.getElementsByTagName("bean");
@@ -73,6 +75,6 @@ public class XmlParser {
 
     // 获取配置文件中的包名
     public static List<String> getComponentPackageNames() {
-        return ComponentPackageNames;
+        return componentPackageNames;
     }
 }

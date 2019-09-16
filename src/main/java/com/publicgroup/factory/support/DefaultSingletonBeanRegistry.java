@@ -7,30 +7,30 @@ import	java.util.logging.Logger;
 
 public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
-    private final static Logger logger= LogFactory.getGlobalLog();
+    private  static final Logger logger= LogFactory.getGlobalLog();
 
-    private final Map SingletonObjects=new ConcurrentHashMap<String,Object>(64);
+    private final Map singletonObjects=new ConcurrentHashMap<String,Object>(64);
 
     @Override
     public void registerSingleton(String beanName, Object beanInstance) {
-        SingletonObjects.put(beanName,beanInstance);
+        singletonObjects.put(beanName,beanInstance);
         logger.info("put bean:"+beanName + "  "+beanInstance.toString());
     }
 
     @Override
     public Object getSingleton(String beanName) {
-        return SingletonObjects.get(beanName);
+        return singletonObjects.get(beanName);
     }
 
-    public Map<String,Object> getSingletonObjects(){return SingletonObjects;}
+    public Map<String,Object> getSingletonObjects(){return singletonObjects;}
 
     @Override
     public boolean containSingleton(String beanName) {
-        return SingletonObjects.containsKey(beanName);
+        return singletonObjects.containsKey(beanName);
     }
 
     @Override
     public int getSingleCount() {
-        return SingletonObjects.size();
+        return singletonObjects.size();
     }
 }

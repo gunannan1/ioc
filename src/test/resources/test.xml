@@ -2,5 +2,5 @@
 
 <beans>
 
-    <package-scan package-name="com.publicgroup.entity"></package-scan>
+    <package-scan package-name="com.publicgroup.entity" />
 </beans>

@@ -9,6 +9,7 @@ import com.publicgroup.factory.support.BeanDefinitionRegistry;
 import com.publicgroup.factory.support.XmlParser;
 import com.publicgroup.resourcereader.resource.Resource;
 import com.publicgroup.util.Assert;
+import com.publicgroup.util.Converter;
 import com.publicgroup.util.ScanPackageUtil;
 
 import java.lang.reflect.Field;
@@ -41,14 +42,14 @@ public class AnnotationBeanDefinitionReader extends XmlBeanDefinitionReader {
         // 加载xml中定义的beanDefinition
         int count = super.doLoadBeanDefinitions(resource);
         // 获得包名，将包下的类进行解析
-        List<String> PackageNames = XmlParser.getComponentPackageNames();
+        List<String> packageNames = XmlParser.getComponentPackageNames();
         // 读取
-        if (Assert.isNotEmpty(PackageNames)) {
-            for (String PackageName : PackageNames) {
+        if (Assert.isNotEmpty(packageNames)) {
+            for (String PackageName : packageNames) {
                 // 获得包下的所有类名
-                List<String> ClassNames = ScanPackageUtil.getClassName(PackageName);
-                if (Assert.isNotEmpty(ClassNames)) {
-                    for (String ClassName : ClassNames) {
+                List<String> classNames = ScanPackageUtil.getClassName(PackageName);
+                if (Assert.isNotEmpty(classNames)) {
+                    for (String ClassName : classNames) {
                         BeanDefinition beanDefinition = new DefaultBeanDefinition();
                         // 获得beanDefinition的beanClass
                         Class<?> beanClass = Class.forName(ClassName);
@@ -64,7 +65,7 @@ public class AnnotationBeanDefinitionReader extends XmlBeanDefinitionReader {
                                     if (autowired != null) {
 
                                         if(!autowired.value().equals("")){
-                                            beanDefinition.setAttribute(f.getName(),f.getType(),autowired.value());
+                                            beanDefinition.setAttribute(f.getName(),f.getType(), f.getType().cast(Converter.Object2Value(f.getType(),autowired.value())));
                                         }else{
                                             beanDefinition.addDepend(f.getName(),f.getType().getSimpleName().toLowerCase());
                                         }
@@ -74,7 +75,7 @@ public class AnnotationBeanDefinitionReader extends XmlBeanDefinitionReader {
                             }
                             // 默认使用全部小写的方式
                             String beanDefinitionName =
-                                    (ClassName.substring(ClassName.lastIndexOf(".") + 1)).toLowerCase();
+                                    (ClassName.substring(ClassName.lastIndexOf('.') + 1)).toLowerCase();
                             beanDefinitions.put(beanDefinitionName, beanDefinition);
                             count++;
                         }

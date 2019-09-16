@@ -10,6 +10,7 @@ import com.publicgroup.resourcereader.reader.AnnotationBeanDefinitionReader;
 import com.publicgroup.resourcereader.resource.Resource;
 import com.publicgroup.util.log.LogFactory;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AutowireApplicationContext extends DefaultListableBeanFactory implements AutowireCapableBeanFactory {
@@ -35,7 +36,8 @@ public class AutowireApplicationContext extends DefaultListableBeanFactory imple
         int count=new AutowireAnnotationBeanDefinition(this).loadBeanDefinitions(resource);
         logger.info("一共初注册了:"+count+"个beanDefinition");
     }
-    /*TODO*/
+
+
     @Override
     public Object AutowireBean(String BeanName) throws IllegalAccessException, InstantiationException {
 
@@ -59,7 +61,7 @@ public class AutowireApplicationContext extends DefaultListableBeanFactory imple
                                     }
                                 }
                             } catch (IllegalAccessException e) {
-                                e.printStackTrace();
+                                logger.log(Level.SEVERE,"Error:",e);
                             }
 
                         }
