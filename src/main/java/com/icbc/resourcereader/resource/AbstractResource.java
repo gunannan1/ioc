@@ -8,12 +8,12 @@ import java.io.InputStream;
 public abstract class AbstractResource implements Resource{
     @Override
     public boolean FileExists() {
-        // Try file existence: can we find the file in the file system?
+        // 尝试找到该文件
         try {
             return getFile().exists();
         }
         catch (IOException ex) {
-            // Fall back to stream existence: can we open the stream?
+            // 尝试打开流
             try {
                 InputStream is = getInputStream();
                 is.close();
@@ -27,7 +27,7 @@ public abstract class AbstractResource implements Resource{
 
     @Override
     public File getFile() throws IOException {
-        throw new FileNotFoundException(getDescription() + " cannot be resolved to absolute file path");
+        throw new FileNotFoundException(getDescription() + " 无法解析为绝对文件路径");
     }
 
     @Override

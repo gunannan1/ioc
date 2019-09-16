@@ -13,6 +13,6 @@ public interface Resource {
 
     File getFile() throws IOException;
 
-    //return a  description for the  resource
+    //返回对resource的描述
     String getDescription();
 }

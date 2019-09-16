@@ -24,7 +24,6 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
     }
 
-    // spring有四個加載bean定義的方法，這裡只實現一個
     @Override
     public int loadBeanDefinitions(Resource resource) throws Exception {
         return doLoadBeanDefinitions(resource);
