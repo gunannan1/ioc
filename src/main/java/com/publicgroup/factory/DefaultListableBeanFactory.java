@@ -81,7 +81,7 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
                     logger.severe("beanDefinition中存在循环依赖");
                     throw new CircularDependException("beanDefinition中存在循环依赖");
                 }
-                // 在这里分两种情况，先确定需要注入的是基本类型还是bean
+
 
                 String methodName = "set" + entry.getKey().substring(0, 1).toUpperCase() +  entry.getKey().substring(1);
                     // 获取bean的class对象

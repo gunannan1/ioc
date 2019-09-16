@@ -34,7 +34,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         beanDefinitions = XmlParser.parse(doc);
 
         for (Entry<String, BeanDefinition> beanDefinition : beanDefinitions.entrySet()) {
-            //注册beandefinition，可以理解为工厂通过resource获取beanDefinition
+            //注册beandefinition，可以理解为工厂通过registry获取beanDefinition
             // key is the name of bean,value is the beanDefinition
             registry.registerBeanDefinition(beanDefinition.getKey(), beanDefinition.getValue());
         }
