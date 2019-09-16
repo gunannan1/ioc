@@ -13,6 +13,7 @@ import com.icbc.util.ScanPackageUtil;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 /*
  * @description  直接继承XmlBeanDefinitionReader类实现，不仅能读取xml配置，
@@ -61,6 +62,7 @@ public class AnnotationBeanDefinitionReader extends XmlBeanDefinitionReader {
                                 for (Field f : fields) {
                                     Autowired autowired = f.getAnnotation(Autowired.class);
                                     if (autowired != null) {
+
                                         if(!autowired.value().equals("")){
                                             beanDefinition.setAttribute(f.getName(),f.getType(),autowired.value());
                                         }else{
@@ -79,6 +81,10 @@ public class AnnotationBeanDefinitionReader extends XmlBeanDefinitionReader {
                     }
                 }
             }
+        }
+        for (Map.Entry<String, BeanDefinition> beanDefinition : beanDefinitions.entrySet()) {
+            //注册beandefinition，可以理解为工厂通过resource获取beanDefinition
+            registry.registerBeanDefinition(beanDefinition.getKey(), beanDefinition.getValue());
         }
         return count;
     }

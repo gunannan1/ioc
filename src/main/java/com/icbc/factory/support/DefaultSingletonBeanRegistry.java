@@ -14,13 +14,15 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
     @Override
     public void registerSingleton(String beanName, Object beanInstance) {
         SingletonObjects.put(beanName,beanInstance);
-        logger.info("put bean:"+beanName + ""+beanInstance.toString());
+        logger.info("put bean:"+beanName + "  "+beanInstance.toString());
     }
 
     @Override
     public Object getSingleton(String beanName) {
         return SingletonObjects.get(beanName);
     }
+
+    public Map<String,Object> getSingletonObjects(){return SingletonObjects;}
 
     @Override
     public boolean containSingleton(String beanName) {

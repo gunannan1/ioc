@@ -2,7 +2,9 @@ package com.icbc.entity;
 
 
 import com.icbc.annotation.Autowired;
+import com.icbc.annotation.component;
 
+@component
 public class Father {
     @Autowired(value ="大王")
     private String name;

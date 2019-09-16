@@ -104,7 +104,6 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
         return bean;
     }
 
-    /*TODO*/
     private Object beanBasicTypeAutowired(Object bean, BeanDefinition beanDefinition){
 
         for (Map.Entry<String,Object>entry:beanDefinition.getAttributes().entrySet()){

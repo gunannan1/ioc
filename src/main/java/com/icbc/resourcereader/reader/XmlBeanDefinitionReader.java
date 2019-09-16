@@ -43,6 +43,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         return beanDefinitions.size();
     }
 
+
+
     protected Document doLoadDocument(Resource resource) throws Exception {
         return new XmlDocumentResource(resource.getFile()).getDocument();
     }
