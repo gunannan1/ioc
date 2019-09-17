@@ -1,6 +1,7 @@
 package com.publicgroup.factory;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -59,7 +60,7 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
         // 如何通过beanDefinition获得一个完整的bean实例（我们已经获取了bean的依赖集合）
         // 当createBean的时候，它所依赖的bean一定已经创建完成了，并且已经放入了完成池
         // 反射获取方法，进行bean的注入
-        Map depends=beanDefinition.getDepends();
+        List depends=beanDefinition.getDepends();
         Class<?> cl = beanDefinition.getBeanClass();
         Object bean = null;
         try {
@@ -77,7 +78,7 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
                 bean=invokeAttributes(bean,field.getName(),value);
             }else if(beanDefinition.containsDepend(field.getName())){
             /*bean依赖注入*/
-                if (creatingBeanPool.get(depends.get(field.getName()))!=null){
+                if (creatingBeanPool.get(field.getName())!=null){
                     logger.severe("beanDefinition中存在循环依赖");
                     throw new CircularDependException("beanDefinition中存在循环依赖");
                 }

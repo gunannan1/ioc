@@ -1,6 +1,7 @@
 package com.publicgroup.factory;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import	java.util.logging.Logger;
 
@@ -67,23 +68,23 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
             /*
              * 在创建bean之前，我先得将它依赖的bean进行创建 1.获取beanDefintionName
              */
-            Map<String,String> depends = beanDefinition.getDepends();
+            List<String> depends = beanDefinition.getDepends();
             // 如果当前创建的bean是依赖于其他bean的
             if (depends != null && depends.size() >= 1) {
-                for (Map.Entry<String, String> entry :depends.entrySet()) {
+                for (String depend :depends) {
                     // 如果发现该bean的某些依赖不存在
-                    if (!containsBeanDefintion(entry.getValue())) {
+                    if (!containsBeanDefintion(depend)) {
                         logger.warning("beanName: "+name + "     message:may be you will create  a  "
-                                + "incomplete bean,依赖的bean:"+entry.getValue()+"不存在！");
+                                + "incomplete bean,依赖的bean:"+depend+"不存在！");
                         // 直接跳过，进入下一次循环
                     } else {
                         // 存在该bean依赖的beanDefinition，我们必须先创建它所依赖的bean
                         // 在这里，如果发现需要的依赖bean并没有创建完毕
-                        if (creatingBeanPool.get(entry.getValue()) != null) {
+                        if (creatingBeanPool.get(depend) != null) {
                             logger.severe("beanDefinition中存在循环依赖，请检查您配置文件！");
                             throw new CircularDependException("beanDefinition中存在循环依赖");
                         }
-                        getBean(entry.getValue());
+                        getBean(depend);
                     }
                 }
             }

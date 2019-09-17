@@ -1,4 +1,6 @@
 package com.publicgroup.config;
+import java.util.ArrayList;
+import java.util.List;
 import	java.util.Map;
 import com.publicgroup.util.log.LogFactory;
 
@@ -21,19 +23,19 @@ public class DefaultBeanDefinition implements BeanDefinition{
      * 当前bean所依赖的bean列表
      * spring中beanDefinition只返回bean的name
      */
-    Map<String,String> dependentBeanDefinitions=new ConcurrentHashMap<>();
+    List<String> dependentBeanDefinitions=new ArrayList<>();
 
     Map<String,Object>attributes=new ConcurrentHashMap<>();
 
 
     @Override
-    public Map getDepends() {
+    public List getDepends() {
         return dependentBeanDefinitions;
     }
 
     @Override
-    public void addDepend(String name,String depend) {
-        dependentBeanDefinitions.put(name,depend);
+    public void addDepend(String depend) {
+        dependentBeanDefinitions.add(depend);
     }
 
 
@@ -57,7 +59,7 @@ public class DefaultBeanDefinition implements BeanDefinition{
 
     @Override
     public boolean containsDepend(String name) {
-        return dependentBeanDefinitions.containsKey(name);
+        return dependentBeanDefinitions.contains(name);
     }
 
     @Override

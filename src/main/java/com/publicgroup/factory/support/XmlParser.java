@@ -8,6 +8,7 @@ import	java.util.Map;
 
 import com.publicgroup.config.BeanDefinition;
 import com.publicgroup.config.DefaultBeanDefinition;
+import com.publicgroup.util.Assert;
 import com.publicgroup.util.Converter;
 import com.publicgroup.util.log.LogFactory;
 import org.w3c.dom.Document;
@@ -54,14 +55,18 @@ public class XmlParser {
 
                 String name = property.getAttribute("name");
                 String value = property.getAttribute("value");
-                String ref = property.getAttribute("ref");
-                if(value != null&&value.length()>0){
+                if(Assert.isEffectiveString(value)&&Assert.isEffectiveString(name)){
                     beanDefinition.setAttribute(name, value);
                 }
-                else if(ref != null&&ref.length()>0){
-                    beanDefinition.addDepend(name,ref);
-                }
+            }
+            NodeList refs=node.getElementsByTagName("ref");
+            for(int j=0;j<refs.getLength();j++){
 
+                Element ref=(Element) refs.item(j);
+                String bean=ref.getAttribute("bean");
+                if(Assert.isEffectiveString(bean)){
+                    beanDefinition.addDepend(bean);
+                }
             }
             beanDefinitions.put(id,beanDefinition);
         }

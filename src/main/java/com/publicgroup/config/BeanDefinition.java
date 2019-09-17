@@ -1,14 +1,15 @@
 package com.publicgroup.config;
 
+import java.util.List;
 import java.util.Map;
 
 
 public interface BeanDefinition extends AttributeAccessor{
 
     //获得依赖BeanDefinition的名字
-    Map getDepends();
+    List getDepends();
 
-    void addDepend(String name,String depend);
+    void addDepend(String depend);
 
     String getDescription();
 
