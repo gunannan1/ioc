@@ -2,8 +2,8 @@ package com.publicgroup.resourcereader.reader;
 
 
 import com.publicgroup.factory.support.BeanDefinitionRegistry;
-import com.publicgroup.resourcereader.ResourceLoader;
 import com.publicgroup.resourcereader.resource.Resource;
+import com.publicgroup.resourcereader.resource.ResourceLoader;
 
 public interface BeanDefinitionReader {
 	

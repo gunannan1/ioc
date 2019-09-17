@@ -1,4 +1,5 @@
 package com.publicgroup.factory;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,15 +10,16 @@ import com.publicgroup.config.BeanDefinition;
 import com.publicgroup.exception.CircularDependException;
 import com.publicgroup.exception.NoSuchBeanDefinitionException;
 import com.publicgroup.factory.support.BeanDefinitionRegistry;
-import com.publicgroup.resourcereader.ResourceLoader;
 import com.publicgroup.resourcereader.reader.XmlBeanDefinitionReader;
 import com.publicgroup.resourcereader.resource.FileSystemResource;
 import com.publicgroup.resourcereader.resource.Resource;
+import com.publicgroup.resourcereader.resource.ResourceLoader;
+import com.publicgroup.util.Converter;
 import com.publicgroup.util.log.LogFactory;
 
 
 public class DefaultListableBeanFactory extends AbstractBeanFactory implements
-        BeanDefinitionRegistry,ListableBeanFactory,ResourceLoader {
+        BeanDefinitionRegistry,ResourceLoader {
 
     private static Logger logger = LogFactory.getGlobalLog();
     protected Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
@@ -49,10 +51,7 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
         }
     }
 
-    @Override
-    public int getBeanDefinitionCount() {
-        return beanDefinitionMap.size();
-    }
+
 
 
     @Override
@@ -60,7 +59,7 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
         // 如何通过beanDefinition获得一个完整的bean实例（我们已经获取了bean的依赖集合）
         // 当createBean的时候，它所依赖的bean一定已经创建完成了，并且已经放入了完成池
         // 反射获取方法，进行bean的注入
-        Map<String,String> depends = beanDefinition.getDepends();
+        Map depends=beanDefinition.getDepends();
         Class<?> cl = beanDefinition.getBeanClass();
         Object bean = null;
         try {
@@ -69,60 +68,63 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
         } catch (Exception e1) {
             logger.log(Level.SEVERE,"反射异常");
         }
-
-        //为bean中的基础属性赋值
-        beanBasicTypeAutowired(bean,beanDefinition);
-
-        if (depends != null && depends.size() >= 1) {
-            // 此时的bean还不完整，还没有注入它的依赖，我们将它放入新生池
-            creatingBeanPool.put(BeanName, bean);
-            for (Map.Entry<String,String>entry:depends.entrySet()) {
-                if (creatingBeanPool.get(entry.getValue()) != null) {
+        /*遍历所有属性*/
+        Field[]fields=cl.getDeclaredFields();
+        for (Field field : fields){
+            /*如果是基本属性注入*/
+            if(beanDefinition.containsAttribute(field.getName())){
+                Object value = beanDefinition.getAttribute(field.getName());
+                bean=invokeAttributes(bean,field.getName(),value);
+            }else if(beanDefinition.containsDepend(field.getName())){
+            /*bean依赖注入*/
+                if (creatingBeanPool.get(depends.get(field.getName()))!=null){
                     logger.severe("beanDefinition中存在循环依赖");
                     throw new CircularDependException("beanDefinition中存在循环依赖");
                 }
-
-
-                String methodName = "set" + entry.getKey().substring(0, 1).toUpperCase() +  entry.getKey().substring(1);
-                    // 获取bean的class对象
-                    // 通过反射获取方法
                 try {
-                    Method method = cl.getMethod(methodName, completedBeanPool.get(entry.getValue()).getClass());
-                        // 调用set方法完成注入
-                    method.invoke(bean, completedBeanPool.get(entry.getValue()));
-                } catch (NoSuchMethodException e) {
-                    logger.severe("需要获取得bean中没有" + methodName + "方法");
-                } catch (Exception e) {
-                    logger.severe("获取到了set方法，没有能获取到需要注入的bean:" + entry.getValue());
+                    invokeDepends(bean,field.getName(),completedBeanPool.get(field.getName()));
+                } catch (NoSuchFieldException e) {
+                    logger.log(Level.SEVERE,"context:",e);
                 }
+            }else{
+                logger.severe(field.getName()+"is not found in BeanDefinition");
             }
-
         }
+
         registerSingleton(BeanName,bean);
         return bean;
     }
 
-    private Object beanBasicTypeAutowired(Object bean, BeanDefinition beanDefinition){
-
-        for (Map.Entry<String,Object>entry:beanDefinition.getAttributes().entrySet()){
-            Class<?> clazz=beanDefinition.getType(entry.getKey());
-            String methodName = "set" + entry.getKey().substring(0, 1).toUpperCase() +  entry.getKey().substring(1);
-            invokeMethod(bean,methodName, clazz,entry.getValue());
+    private Object invokeDepends(Object bean,String Name, Object args) throws NoSuchFieldException {
+        String methodName= "set" + Name.substring(0, 1).toUpperCase() + Name.substring(1);
+        try {
+            Method method = bean.getClass().getMethod(methodName, completedBeanPool.get(Name).getClass());
+             /*调用set方法完成注入*/
+            method.invoke(bean, completedBeanPool.get(Name));
+        } catch (NoSuchMethodException e) {
+            logger.severe("需要获取得bean中没有" + methodName + "方法");
+        } catch (Exception e) {
+            logger.severe("获取到了set方法，没有能获取到需要注入的bean:" +args);
         }
         return bean;
     }
 
 
-    private Object invokeMethod(Object bean, String methodName, Class<?> parameterTypes, Object args) {
+    private Object invokeAttributes(Object bean, String Name,  Object args) {
+        String methodName = "set" + Name.substring(0, 1).toUpperCase() + Name.substring(1);
         try {
-            Method method = bean.getClass().getMethod(methodName, parameterTypes);
-            method.invoke(bean, args);
+
+            Field field =bean.getClass().getDeclaredField(Name);
+            Method method = bean.getClass().getMethod(methodName, field.getType());
+            method.invoke(bean, field.getType().cast(Converter.Object2Value(field.getType(), args)));
         } catch (Exception e) {
             logger.severe("基本类型注入时方法调用错误，可能原因：属性名配置错误，类型不匹配\n"+
                     "方法名："+methodName+"参数："+args);
         }
         return bean;
     }
+
+
     @Override
     public boolean containsBeanDefintion(String beanDefinitionName) {
         return beanDefinitionMap.containsKey(beanDefinitionName);

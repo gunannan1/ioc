@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class FileSystemResource extends AbstractResource {
+public class FileSystemResource implements Resource {
 
     private final File file;
 
@@ -37,4 +37,10 @@ public class FileSystemResource extends AbstractResource {
     public File getFile(){
         return this.file;
     }
+
+	@Override
+	public boolean FileExists() {
+		// TODO Auto-generated method stub
+		return this.file.exists();
+	}
 }

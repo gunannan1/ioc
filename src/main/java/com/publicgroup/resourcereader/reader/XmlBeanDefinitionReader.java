@@ -47,5 +47,15 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         return new XmlDocumentResource(resource.getFile()).getDocument();
     }
 
+	@Override
+	public int loadBeanDefinitions(Resource... resources) throws Exception {
+		// TODO Auto-generated method stub
+		int count=0;
+		for(Resource resource:resources) {
+			count+=doLoadBeanDefinitions(resource);
+		}
+		return count;
+	}
+
 
 }

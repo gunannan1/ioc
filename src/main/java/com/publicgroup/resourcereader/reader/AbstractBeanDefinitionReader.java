@@ -2,8 +2,8 @@ package com.publicgroup.resourcereader.reader;
 
 
 import com.publicgroup.factory.support.BeanDefinitionRegistry;
-import com.publicgroup.resourcereader.ResourceLoader;
 import com.publicgroup.resourcereader.resource.Resource;
+import com.publicgroup.resourcereader.resource.ResourceLoader;
 
 public abstract class AbstractBeanDefinitionReader implements BeanDefinitionReader{
 	
@@ -24,20 +24,6 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 	@Override
 	public ResourceLoader getResourceLoader() {
 		return this.resourceLoader;
-	}
-
-	@Override
-	public int loadBeanDefinitions(Resource... resources) throws Exception{
-		/*在这里先简单实现，return the number of bean definitions found
-		这个方法是个死循环，也就是说继承这个类的子类必须重写loadBeanDefinitions(resource)，
-		真正返回the number of bean definitions found,再调用父类loadBeanDefinitions
-		方法，返回所有definition的个数，在这里并没有实现loadBeanDefinitions(resource)方法，
-		真正的实现交给继承它的子类*/
-		int count=0;
-		for(Resource resource:resources){
-			count+=loadBeanDefinitions(resource);
-		}
-		return count;
 	}
 		
 }

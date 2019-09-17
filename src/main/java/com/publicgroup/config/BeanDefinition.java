@@ -15,4 +15,6 @@ public interface BeanDefinition extends AttributeAccessor{
     Class<?> getBeanClass();
 
     void setBeanClass(Class<?> beanClass);
+
+    boolean containsDepend(String name);
 }

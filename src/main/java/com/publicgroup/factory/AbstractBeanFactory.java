@@ -87,7 +87,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
                     }
                 }
             }
-            // 此时bean已经创建完毕
+            // 此时依赖的bean已经创建完毕
             bean = createBean(name, beanDefinition);
             // 放入完成池,并将它移除新生池
             addToCompletedBeanPoolAndRemoveFromBabyBeanPool(name, bean);

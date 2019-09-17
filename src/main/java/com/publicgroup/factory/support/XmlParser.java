@@ -55,9 +55,8 @@ public class XmlParser {
                 String name = property.getAttribute("name");
                 String value = property.getAttribute("value");
                 String ref = property.getAttribute("ref");
-                String type = property.getAttribute("type");
                 if(value != null&&value.length()>0){
-                    beanDefinition.setAttribute(name, Converter.cast2Class(type),value);
+                    beanDefinition.setAttribute(name, value);
                 }
                 else if(ref != null&&ref.length()>0){
                     beanDefinition.addDepend(name,ref);

@@ -3,11 +3,17 @@ package com.publicgroup.util;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.publicgroup.util.log.LogFactory;
 
 /**
  * @author Yuxudong
  */
 public class ScanPackageUtil {
+	
+	private static final Logger LOGGER=LogFactory.getGlobalLog();
 
     private ScanPackageUtil(){}
 
@@ -30,6 +36,11 @@ public class ScanPackageUtil {
                         myClassName));
             } else {
                 String childFilePath = childFile.getPath();
+               
+                if(LOGGER.isLoggable(Level.INFO)) {
+                	LOGGER.info(childFilePath);
+                }
+                
                 childFilePath = childFilePath.substring(
                         childFilePath.indexOf("com\\"),
                         childFilePath.lastIndexOf('.'));

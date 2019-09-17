@@ -1,11 +1,8 @@
-package com.publicgroup.resourcereader;
-
-import com.publicgroup.resourcereader.resource.FileSystemResource;
-import com.publicgroup.resourcereader.resource.Resource;
+package com.publicgroup.resourcereader.resource;
 
 import java.io.File;
 
-public class FileSystemResourceLoader extends DefaultResourceLoader {
+public class FileSystemResourceLoader implements ResourceLoader  {
 
     @Override
     public Resource getResource(String path) {

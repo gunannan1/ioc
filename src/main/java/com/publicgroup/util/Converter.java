@@ -772,7 +772,7 @@ public class Converter {
 
     }
 
-    public static Object Object2Value(Class<?>classname,String value){
+    public static Object Object2Value(Class<?>classname,Object value){
         Object ans=null;
         if(classname==int.class||classname==Integer.class) {
             ans = getAsInteger(value);

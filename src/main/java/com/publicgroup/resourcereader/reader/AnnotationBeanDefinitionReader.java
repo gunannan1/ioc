@@ -65,7 +65,7 @@ public class AnnotationBeanDefinitionReader extends XmlBeanDefinitionReader {
                                     if (autowired != null) {
 
                                         if(!autowired.value().equals("")){
-                                            beanDefinition.setAttribute(f.getName(),f.getType(), f.getType().cast(Converter.Object2Value(f.getType(),autowired.value())));
+                                            beanDefinition.setAttribute(f.getName(),f.getType().cast(Converter.Object2Value(f.getType(),autowired.value())));
                                         }else{
                                             beanDefinition.addDepend(f.getName(),f.getType().getSimpleName().toLowerCase());
                                         }
