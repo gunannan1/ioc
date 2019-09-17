@@ -9,6 +9,7 @@ import	java.util.logging.Logger;
 
 import com.publicgroup.config.BeanDefinition;
 import com.publicgroup.exception.CircularDependException;
+import com.publicgroup.exception.FieldDefinitionNotFoundException;
 import com.publicgroup.exception.NoSuchBeanDefinitionException;
 import com.publicgroup.factory.support.BeanDefinitionRegistry;
 import com.publicgroup.resourcereader.reader.XmlBeanDefinitionReader;
@@ -88,7 +89,12 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
                     logger.log(Level.SEVERE,"context:",e);
                 }
             }else{
-                logger.severe(field.getName()+"is not found in BeanDefinition");
+                try{
+                    throw new FieldDefinitionNotFoundException("");
+                }catch (FieldDefinitionNotFoundException e){
+                    logger.log(Level.WARNING,field.getName()+"is not found in BeanDefinition",e);
+                }
+
             }
         }
 

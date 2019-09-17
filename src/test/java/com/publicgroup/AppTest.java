@@ -23,15 +23,15 @@ public class AppTest
     public void shouldAnswerWithTrue() throws Exception {
 
         AutowireApplicationContext default1 = new AutowireApplicationContext(
-                AppTest.class.getResource("/test2.xml").getFile()
+                AppTest.class.getResource("/test.xml").getFile()
         );
 
         Father father= (Father) default1.getBean("father");
-
         Son son=(Son)default1.getBean("son");
         father.say();
         son.say();
-        
+
+
 
     }
 }
