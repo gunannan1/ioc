@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.icbc.XmlTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.051 s <<< FAILURE! - in com.icbc.XmlTest
-test(com.icbc.XmlTest)  Time elapsed: 0.051 s  <<< ERROR!
-java.lang.NullPointerException
-	at com.icbc.XmlTest.test(XmlTest.java:22)
-

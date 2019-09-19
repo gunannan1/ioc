@@ -79,17 +79,6 @@ public class DefaultBeanDefinition implements BeanDefinition{
         return attributes.containsKey(name);
     }
 
-    @Override
-    public <T> T removeAttribute(String name) {
-        if (containsAttribute(name)){
-            T value= (T) attributes.get(name);
-            attributes.remove(name);
-            return value;
-        }else{
-            logger.severe("Not Found "+name);
-            return null;
-        }
-    }
 
     @Override
     public Map<String, Object>getAttributes(){
@@ -99,6 +88,6 @@ public class DefaultBeanDefinition implements BeanDefinition{
 	@Override
 	public String getDescription() {
 		// TODO Auto-generated method stub
-		return getClass().getName();
+		return getClass().getSimpleName();
 	}
 }

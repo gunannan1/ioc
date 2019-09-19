@@ -3,6 +3,7 @@ package com.publicgroup.factory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import	java.util.logging.Logger;
 
 import com.publicgroup.config.BeanDefinition;
@@ -19,7 +20,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     /**
      *  创建完成bean池，我会将创建已完成的bean放入其中
      */
-    protected Map completedBeanPool = new HashMap<String, Object>();
+    //protected Map completedBeanPool = new HashMap<String, Object>();
     /**
      *  创建bean新生池，将正在创建的bean放入其中
      */
@@ -51,8 +52,12 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         if ((bean = getSingleton(name)) != null) {
             // 如果传入的requiredType==null || 不是所要求类型的实例
             if (requiredType == null || !requiredType.isInstance(bean)) {
-                logger.severe("传入的requiredType==null  ||  不是所要求类型的实例");
-                throw new ClassCastException("类型转换错误");
+                try {
+                    throw new ClassCastException("类型转换错误");
+                }catch (ClassCastException e){
+                    logger.log(Level.SEVERE,"传入的requiredType==null  ||  不是所要求类型的实例",e);
+                }
+
             }
         } else {
             // 获得beanDefinition
@@ -61,7 +66,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
                 try {
                     throw new NoSuchBeanDefinitionException("");
                 } catch (NoSuchBeanDefinitionException e1) {
-                    logger.severe("bean不存在:"+name);
+                    logger.log(Level.SEVERE,"bean不存在:"+name,e1);
                     return null;
                 }
             }
@@ -98,9 +103,9 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     // 将创建完成的bean放入完成池,并将它移除新生池
     private synchronized void addToCompletedBeanPoolAndRemoveFromBabyBeanPool(String name, Object bean) {
-        if (completedBeanPool.get(name) == null) {
+        /*if (completedBeanPool.get(name) == null) {
             completedBeanPool.put(name, bean);
-        }
+        }*/
         creatingBeanPool.remove(name);
     }
 

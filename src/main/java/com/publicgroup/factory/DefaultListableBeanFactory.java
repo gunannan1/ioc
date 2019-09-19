@@ -80,11 +80,11 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
             }else if(beanDefinition.containsDepend(field.getName())){
             /*bean依赖注入*/
                 if (creatingBeanPool.get(field.getName())!=null){
-                    logger.severe("beanDefinition中存在循环依赖");
+                    logger.log(Level.SEVERE,"beanDefinition中存在循环依赖");
                     throw new CircularDependException("beanDefinition中存在循环依赖");
                 }
                 try {
-                    invokeDepends(bean,field.getName(),completedBeanPool.get(field.getName()));
+                    invokeDepends(bean,field.getName(),getSingleton(field.getName()));
                 } catch (NoSuchFieldException e) {
                     logger.log(Level.SEVERE,"context:",e);
                 }
@@ -105,13 +105,13 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
     private Object invokeDepends(Object bean,String Name, Object args) throws NoSuchFieldException {
         String methodName= "set" + Name.substring(0, 1).toUpperCase() + Name.substring(1);
         try {
-            Method method = bean.getClass().getMethod(methodName, completedBeanPool.get(Name).getClass());
+            Method method = bean.getClass().getMethod(methodName, getSingleton(Name).getClass());
              /*调用set方法完成注入*/
-            method.invoke(bean, completedBeanPool.get(Name));
+            method.invoke(bean, getSingleton(Name));
         } catch (NoSuchMethodException e) {
-            logger.severe("需要获取得bean中没有" + methodName + "方法");
+            logger.log(Level.SEVERE,"需要获取得bean中没有" + methodName + "方法\n",e);
         } catch (Exception e) {
-            logger.severe("获取到了set方法，没有能获取到需要注入的bean:" +args);
+            logger.log(Level.SEVERE,"获取到了set方法，没有能获取到需要注入的bean:" +args,e);
         }
         return bean;
     }
@@ -125,8 +125,8 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
             Method method = bean.getClass().getMethod(methodName, field.getType());
             method.invoke(bean, field.getType().cast(Converter.Object2Value(field.getType(), args)));
         } catch (Exception e) {
-            logger.severe("基本类型注入时方法调用错误，可能原因：属性名配置错误，类型不匹配\n"+
-                    "方法名："+methodName+"参数："+args);
+            logger.log(Level.SEVERE,"基本类型注入时方法调用错误，可能原因：属性名配置错误，类型不匹配\n"+
+                    "方法名："+methodName+"参数："+args,e);
         }
         return bean;
     }
@@ -166,7 +166,7 @@ public class DefaultListableBeanFactory extends AbstractBeanFactory implements
         if (beanDefinitionMap.get(beanName) != null) {
             beanDefinitionMap.remove(beanName);
         } else {
-            logger.severe("需要移除的bean不存在！");
+            logger.warning("需要移除的bean不存在！");
         }
     }
 }

@@ -5,6 +5,8 @@ import com.publicgroup.factory.support.BeanDefinitionRegistry;
 import com.publicgroup.resourcereader.resource.Resource;
 import com.publicgroup.resourcereader.resource.ResourceLoader;
 
+
+
 public interface BeanDefinitionReader {
 	
 	BeanDefinitionRegistry getBeanDefinitionRegistry();

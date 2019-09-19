@@ -2,9 +2,9 @@ package com.publicgroup.entity;
 
 
 import com.publicgroup.annotation.Autowired;
-import com.publicgroup.annotation.component;
+import com.publicgroup.annotation.Component;
 
-@component
+@Component
 public class Father {
     @Autowired(value ="大王")
     private String name;

@@ -2,7 +2,7 @@ package com.publicgroup.resourcereader.reader;
 
 
 import com.publicgroup.annotation.Autowired;
-import com.publicgroup.annotation.component;
+import com.publicgroup.annotation.Component;
 import com.publicgroup.config.BeanDefinition;
 import com.publicgroup.config.DefaultBeanDefinition;
 import com.publicgroup.factory.support.BeanDefinitionRegistry;
@@ -11,10 +11,12 @@ import com.publicgroup.resourcereader.resource.Resource;
 import com.publicgroup.util.Assert;
 import com.publicgroup.util.Converter;
 import com.publicgroup.util.ScanPackageUtil;
+import com.publicgroup.util.log.LogFactory;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /*
  * @description  直接继承XmlBeanDefinitionReader类实现，不仅能读取xml配置，
@@ -23,9 +25,11 @@ import java.util.Map;
  */
 public class AnnotationBeanDefinitionReader extends XmlBeanDefinitionReader {
 
+    private static final Logger logger = LogFactory.getGlobalLog();
+
     public AnnotationBeanDefinitionReader(BeanDefinitionRegistry registry) {
         super(registry);
-}
+    }
 
     @Override
     public int loadBeanDefinitions(Resource resource) throws Exception {
@@ -44,49 +48,63 @@ public class AnnotationBeanDefinitionReader extends XmlBeanDefinitionReader {
         // 获得包名，将包下的类进行解析
         List<String> packageNames = XmlParser.getComponentPackageNames();
         // 读取
-        if (Assert.isNotEmpty(packageNames)) {
-            for (String PackageName : packageNames) {
-                // 获得包下的所有类名
-                List<String> classNames = ScanPackageUtil.getClassName(PackageName);
-                if (Assert.isNotEmpty(classNames)) {
-                    for (String ClassName : classNames) {
-                        BeanDefinition beanDefinition = new DefaultBeanDefinition();
-                        // 获得beanDefinition的beanClass
-                        Class<?> beanClass = Class.forName(ClassName);
-                        // 验证是否有Component注解
-                        component com = beanClass.getAnnotation(component.class);
-                        if (com != null) {
-                            beanDefinition.setBeanClass(beanClass);
-                            // 还要获取它的依赖
-                            Field[] fields = beanClass.getDeclaredFields();
-                            if (fields.length > 0) {
-                                for (Field f : fields) {
-                                    Autowired autowired = f.getAnnotation(Autowired.class);
-                                    if (autowired != null) {
-
-                                        if(!autowired.value().equals("")){
-                                            beanDefinition.setAttribute(f.getName(),f.getType().cast(Converter.Object2Value(f.getType(),autowired.value())));
-                                        }else{
-                                            beanDefinition.addDepend(f.getName());
-                                        }
-
-                                    }
-                                }
-                            }
-                            // 默认使用全部小写的方式
-                            String beanDefinitionName =
-                                    (ClassName.substring(ClassName.lastIndexOf('.') + 1)).toLowerCase();
-                            beanDefinitions.put(beanDefinitionName, beanDefinition);
-                            count++;
-                        }
-                    }
-                }
-            }
+        if (!Assert.isNotEmpty(packageNames)) {
+            logger.warning("未获取到需要扫描的包！");
+            return count;
         }
+
+        for (String PackageName : packageNames) {
+            // 获得包下的所有类名
+            List<String> classNames = ScanPackageUtil.getClassName(PackageName);
+            if (!Assert.isNotEmpty(classNames)) {
+                logger.warning(PackageName + "为空包");
+                continue;
+            }
+
+            for (String ClassName : classNames) {
+                BeanDefinition beanDefinition = new DefaultBeanDefinition();
+                // 获得beanDefinition的beanClass
+                Class<?> beanClass = Class.forName(ClassName);
+                //从Class对象解析注解获得beanDefinition
+                beanDefinition = resolveBeanDefinitionByAnnotation(beanClass, beanDefinition);
+                // 默认使用全部小写的方式
+                String beanDefinitionName =
+                        (ClassName.substring(ClassName.lastIndexOf('.') + 1)).toLowerCase();
+                beanDefinitions.put(beanDefinitionName, beanDefinition);
+                count++;
+            }
+
+        }
+
         for (Map.Entry<String, BeanDefinition> beanDefinition : beanDefinitions.entrySet()) {
             //注册beandefinition，可以理解为工厂通过resource获取beanDefinition
             registry.registerBeanDefinition(beanDefinition.getKey(), beanDefinition.getValue());
         }
         return count;
+    }
+
+    private BeanDefinition resolveBeanDefinitionByAnnotation(Class<?> beanClass, BeanDefinition beanDefinition) {
+        // 验证是否有Component注解
+        Component com = beanClass.getAnnotation(Component.class);
+        if (com != null) {
+            beanDefinition.setBeanClass(beanClass);
+            // 还要获取它的依赖
+            Field[] fields = beanClass.getDeclaredFields();
+            if (fields.length > 0) {
+                for (Field f : fields) {
+                    Autowired autowired = f.getAnnotation(Autowired.class);
+                    if (autowired != null) {
+
+                        if (!autowired.value().equals("")) {
+                            beanDefinition.setAttribute(f.getName(), f.getType().cast(Converter.Object2Value(f.getType(), autowired.value())));
+                        } else {
+                            beanDefinition.addDepend(f.getName());
+                        }
+
+                    }
+                }
+            }
+        }
+        return beanDefinition;
     }
 }

@@ -2,14 +2,10 @@ package com.publicgroup;
 
 import static org.junit.Assert.assertTrue;
 
-import com.publicgroup.annotation.component;
 import com.publicgroup.context.AutowireApplicationContext;
 import com.publicgroup.entity.Father;
 import com.publicgroup.entity.Son;
-import org.junit.Assert;
 import org.junit.Test;
-
-import java.lang.reflect.Field;
 
 /**
  * Unit test for simple App.

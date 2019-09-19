@@ -1,10 +1,10 @@
 package com.publicgroup.entity;
 
 import com.publicgroup.annotation.Autowired;
-import com.publicgroup.annotation.component;
+import com.publicgroup.annotation.Component;
 
 
-@component
+@Component
 public class Son {
 
     @Autowired(value ="小王")
